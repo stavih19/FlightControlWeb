@@ -7,9 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlightControlWeb.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Flights?relative_to<{date_time}>&sync_all")]
     [ApiController]
-    public class FlightsController : ControllerBase
+    public class FlightsExternalController : ControllerBase
     {
+        [HttpGet]
+        public FlightPlanItem[] GetFlightPlans()
+        {
+            return null;
+        }
     }
 }
