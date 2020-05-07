@@ -7,34 +7,32 @@ namespace FlightControlWeb.Models
 {
     public class ServerModel
     {
-        int server_id;
         string serverURL;
-        List<ServerModel> externalServerModels;
+        List<ExternalServerModel> externalServerModels;
         int port;
         string ipAdress;
+
+        public ServerModel(string serverURL)
+        {
+            this.serverURL = serverURL; // another implement
+        }
 
         public void AddExternalServer(string newSrverURL)
         {
             int newID = externalServerModels.Count + 1;
-            externalServerModels.Add(new ServerModel(newID, newSrverURL));
+            externalServerModels.Add(new ExternalServerModel(newID, newSrverURL));
         }
 
         public void DeleteExternalServer(int id)
         {
-            foreach (ServerModel temp in externalServerModels)
+            foreach (ExternalServerModel temp in externalServerModels)
             {
-                if (temp.server_id == id)
+                if (temp.Server_id == id)
                 {
                     externalServerModels.Remove(temp);
                     break;
                 }
             }
-        }
-
-        public ServerModel(int server_id, string serverURL)
-        {
-            this.server_id = server_id;
-            this.serverURL = serverURL;
         }
 
         public string ServerURL
@@ -43,7 +41,7 @@ namespace FlightControlWeb.Models
             set { serverURL = value; }
         }
 
-        public List<ServerModel> ExternalServerModels
+        public List<ExternalServerModel> ExternalServerModels
         {
             get { return externalServerModels; }
             set { externalServerModels = value; }
