@@ -1,20 +1,43 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
-    public class ServerModel
+    public sealed class ServerModel
     {
-        string serverURL;
+        private static readonly ServerModel instance = new ServerModel();
+
+        static ServerModel() { }
+
+        private ServerModel()
+        {
+            //run the server
+        }
+
+        public static ServerModel Instance
+        {
+            get { return instance; }
+        }
+
+        string serverURL = "127.0.0.1";
         List<ExternalServerModel> externalServerModels;
         int port;
         string ipAdress;
 
-        public ServerModel(string serverURL)
+        public string ServerURL
         {
-            this.serverURL = serverURL; // another implement
+            get { return serverURL; }
+            set { serverURL = value; }
+        }
+
+        public List<ExternalServerModel> ExternalServerModels
+        {
+            get { return externalServerModels; }
+            set { externalServerModels = value; }
         }
 
         public void AddExternalServer(string newSrverURL)
@@ -35,16 +58,31 @@ namespace FlightControlWeb.Models
             }
         }
 
-        public string ServerURL
+        public FlightPlanItem[] GetFlights(string relative_to, bool isExternals)
         {
-            get { return serverURL; }
-            set { serverURL = value; }
+            Console.WriteLine("GetFlights need to be impliment");
+            return null;
         }
 
-        public List<ExternalServerModel> ExternalServerModels
+        public FlightPlanItem GetFlightById(int id)
         {
-            get { return externalServerModels; }
-            set { externalServerModels = value; }
+            Console.WriteLine("GetFlightById need to be impliment");
+            return null;
+        }
+
+        public void AddFlight(FlightPlanItem flight)
+        {
+            Console.WriteLine("AddFlight need to be impliment");
+        }
+
+        public void DeleteFlightById(int id)
+        {
+            Console.WriteLine("DeleteFlightById need to be impliment");
+        }
+
+        public List<ExternalServerModel> GetExternalServers()
+        {
+            return externalServerModels;
         }
     }
 }
