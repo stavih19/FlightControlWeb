@@ -27,7 +27,7 @@ namespace FlightControlWeb.Controllers
         [HttpGet("{id}", Name = "GetFlightPlan")]
         public string Get(int id)
         {
-            FlightPlanItem flight = serverM.GetFlightById(id);
+            FlightPlan flight = serverM.GetFlightById(id);
             string response = JsonConvert.SerializeObject(flight);
             return response;
         }
@@ -36,7 +36,7 @@ namespace FlightControlWeb.Controllers
         [HttpPost]
         public void Post(JsonElement flightJson)
         {
-            FlightPlanItem flight = JsonConvert.DeserializeObject<FlightPlanItem>(flightJson.ToString());
+            FlightPlan flight = JsonConvert.DeserializeObject<FlightPlan>(flightJson.ToString());
             serverM.AddFlight(flight);
         }
 

@@ -22,9 +22,9 @@ namespace FlightControlWeb.Controllers
         {
             string requestString = Request.QueryString.Value;
             bool isExternals = requestString.Contains("sync_all");
-            FlightPlanItem[] flights = serverM.GetFlights(relative_to, isExternals);
+            List<Flight> flights = serverM.GetFlights(relative_to, isExternals);
             string response = "";
-            foreach (FlightPlanItem flight in flights)
+            foreach (Flight flight in flights)
             {
                 response += JsonConvert.SerializeObject(flight);
             }
@@ -35,17 +35,12 @@ namespace FlightControlWeb.Controllers
         [HttpGet("{id}", Name = "GetFlights")]
         public string Get(int id)
         {
-            FlightPlanItem flight = serverM.GetFlightById(id);
-            string response = JsonConvert.SerializeObject(flight);
-            return response;
         }*/
 
         /*// POST: api/Flights
         [HttpPost]
         public void Post(JsonElement flightJson)
         {
-            FlightPlanItem flight = JsonConvert.DeserializeObject<FlightPlanItem>(flightJson.ToString());
-            serverM.AddFlight(flight);
         }*/
 
         /*// PUT: api/Flights/5

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
@@ -15,7 +16,7 @@ namespace FlightControlWeb.Models
 
         private ServerModel()
         {
-            //run the server
+            // run the server
         }
 
         public static ServerModel Instance
@@ -23,15 +24,15 @@ namespace FlightControlWeb.Models
             get { return instance; }
         }
 
-        string serverURL = "127.0.0.1";
         List<ExternalServerModel> externalServerModels;
+        List<Flight> flightsList = new List<Flight>();
         int port;
-        string ipAdress;
+        string ipAdress = "127.0.0.1";
 
-        public string ServerURL
+        public string IpAdress
         {
-            get { return serverURL; }
-            set { serverURL = value; }
+            get { return ipAdress; }
+            set { ipAdress = value; }
         }
 
         public List<ExternalServerModel> ExternalServerModels
@@ -58,19 +59,58 @@ namespace FlightControlWeb.Models
             }
         }
 
-        public FlightPlanItem[] GetFlights(string relative_to, bool isExternals)
+        public List<Flight> GetFlights(string relative_to, bool isExternals)
         {
-            Console.WriteLine("GetFlights need to be impliment");
-            return null;
+            DateTime flightTime;
+            DateTime relateTime = ConvertToDateTime(relative_to);
+            List<Flight> flightToSend = null;
+            if (isExternals)
+            {
+                foreach (Flight flight in flightsList)
+                {
+                    flightTime = ConvertToDateTime(relative_to);
+                    if (DateTime.Compare(relateTime, flightTime) <= 0)
+                    {
+                        flightToSend.Add(flight);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Flight flight in flightsList)
+                {
+                    flightTime = ConvertToDateTime(relative_to);
+                    if ((DateTime.Compare(relateTime, flightTime) <= 0) && (!flight.Is_external))
+                    {
+                        flightToSend.Add(flight);
+                    }
+                }
+            }
+
+
+            return flightToSend;
         }
 
-        public FlightPlanItem GetFlightById(int id)
+        public DateTime ConvertToDateTime(string relative_to)
+        {
+            int year = Int32.Parse(relative_to.Substring(0, 4));
+            int mounth = Int32.Parse(relative_to.Substring(5, 2));
+            int day = Int32.Parse(relative_to.Substring(8, 2));
+            int hour = Int32.Parse(relative_to.Substring(11, 2));
+            int min = Int32.Parse(relative_to.Substring(14, 2));
+            int sec = Int32.Parse(relative_to.Substring(17, 2));
+
+            DateTime convertedDate = new DateTime(year, mounth, day, hour, min, sec);
+            return convertedDate;
+        }
+
+        public FlightPlan GetFlightById(int id)
         {
             Console.WriteLine("GetFlightById need to be impliment");
             return null;
         }
 
-        public void AddFlight(FlightPlanItem flight)
+        public void AddFlight(FlightPlan flight)
         {
             Console.WriteLine("AddFlight need to be impliment");
         }
